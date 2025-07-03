@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>访问选择 | Player-SAID</title>
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式 */
+        :root {
+            --primary-color: #025EF4;
+            --secondary-color: #69D5EB;
+            --accent-color: #00ccff;
+            --text-color: white;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --card-border: rgba(255, 255, 255, 0.2);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 标题样式 */
+        .header {
+            padding: 50px 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            margin-bottom: 40px;
+            position: relative;
+            width: 100%;
+        }
+
+        .title {
+            font-size: 42px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.5s ease-in-out;
+            margin: 0 auto;
+            max-width: 800px;
+            line-height: 1.3;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            margin-top: 20px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .header .title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 选择卡片容器 */
+        .selection-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto 40px;
+        }
+
+        /* 选择卡片样式 */
+        .selection-card {
+            flex: 1 1 400px;
+            margin: 20px;
+            padding: 40px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .selection-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--accent-color);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .selection-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .selection-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .selection-card h2 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .selection-card h2 i {
+            margin-right: 15px;
+            color: white;
+            font-size: 40px;
+        }
+
+        .selection-card h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-color);
+            margin: 15px auto 0;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .selection-content {
+            font-size: 17px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+        }
+
+        /* 访问按钮样式 */
+        .access-btn {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 15px;
+            padding: 12px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .access-btn i {
+            margin-right: 10px;
+        }
+
+        .access-btn:hover {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 204, 255, 0.2);
+        }
+
+        /* 页脚样式 */
+        .footer {
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            text-align: center;
+        }
+
+        .copyright {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+        }
+        
+        .copyright a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        
+        .copyright a:hover {
+            text-decoration: underline;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .header {
+                padding: 40px 20px;
+            }
+            
+            .title {
+                font-size: 36px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .selection-card {
+                flex: 1 1 100%;
+                margin: 15px 0;
+                min-height: auto;
+                padding: 30px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+
+            .title {
+                font-size: 28px;
+            }
+
+            .selection-card h2 {
+                font-size: 24px;
+            }
+
+            .selection-content {
+                font-size: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 24px;
+            }
+            
+            .selection-card {
+                padding: 25px;
+            }
+            
+            .selection-card h2 i {
+                font-size: 32px;
+                margin-right: 10px;
+            }
+            
+            .access-btn {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">请选择访问目标</h1>
+        <p class="subtitle">选择一个您想要访问的站点</p>
+    </div>
+    
+    <div class="selection-container">
+        <!-- 个人博客选项 -->
+        <div class="selection-card">
+            <h2><i class="fas fa-newspaper"></i>个人博客</h2>
+            <p class="selection-content">访问我的个人博客，查看我的信息，我的项目，我的现况，是的，只有这些。</p>
+            <a href="blog.html" class="access-btn"><i class="fas fa-external-link-alt"></i>访问个人博客</a>
+        </div>
+
+        <!-- CFTQ Cloud选项 -->
+        <div class="selection-card">
+            <h2><i class="fas fa-cloud"></i>CFTQ Cloud</h2>
+            <p class="selection-content">访问CFTQ Cloud云安全引擎网站，获取快速、稳定、安全的云安全解决方案，包括病毒扫描、安全分析和威胁情报。</p>
+            <a href="https://player-said.github.io/CFTQ-Cloud/Index.html" class="access-btn"><i class="fas fa-external-link-alt"></i>访问CFTQ Cloud</a>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p class="copyright">&copy; 2025 <Player-SAID></Player-SAID>. 保留所有权利。<br>Created by <a href="#" target="_blank">Player-SAID</a> </p>
+    </footer>
+</body>
+</html>
